@@ -10,17 +10,36 @@
 
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../paper-input/paper-input.html">
     <link rel="import" href="../global-variable.html">
 
     <style is="custom-style" include="demo-pages-shared-styles">
     </style>
   </head>
   <body>
+
     <div class="vertical-section-container centered">
-      <h3>Basic global-variable demo</h3>
+      <h3>Any change in any of the inputs, will automatically propagate to the other input.</h3>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>Element 1</h3>
       <demo-snippet>
-        <template>
-          <global-variable></global-variable>
+        <template is="dom-bind">
+          <global-variable key="input" value="{{ inputElement1 }}"></global-variable>
+          <paper-input label="Element 1"
+                       value="{{ inputElement1 }}"></paper-input>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>Element 2</h3>
+      <demo-snippet>
+        <template is="dom-bind">
+          <global-variable key="input" value="{{ inputElement2 }}"></global-variable>
+          <paper-input label="Element 2"
+                       value="{{ inputElement2 }}"></paper-input>
         </template>
       </demo-snippet>
     </div>
