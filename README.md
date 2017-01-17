@@ -12,7 +12,9 @@
     <script src="../webcomponentsjs/webcomponents-lite.min.js"></script>
     <link rel="import" href="global-variable.html">
     <link rel="import" href="../paper-input/paper-input.html">
-    <next-code-block></next-code-block>
+    <template is="dom-bind">
+        <next-code-block></next-code-block>
+    </template>
   </template>
 </custom-element-demo>
 ```
