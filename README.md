@@ -2,13 +2,14 @@
 
 # \<global-variable\>
 
-This element allows to share data between non-relatives elements.
+[Polymer](https://www.polymer-project.org/1.0/)element that allows share data between non-relatives elements.
 
 ## Demo
 <!--
 ```
 <custom-element-demo>
   <template>
+    <script src="../webcomponentsjs/webcomponents-lite.min.js"></script>
     <link rel="import" href="global-variable.html">
     <link rel="import" href="../paper-input/paper-input.html">
     <next-code-block></next-code-block>
@@ -17,17 +18,15 @@ This element allows to share data between non-relatives elements.
 ```
 -->
 ```html
-<template is="dom-bind">
-  <global-variable key="input" value="{{ inputElement1 }}"></global-variable>
+  <global-variable key="input" 
+                   value="{{ inputElement1 }}"></global-variable>
   <paper-input label="Element 1"
                value="{{ inputElement1 }}"></paper-input>
-</template>
 
-<template is="dom-bind">
-  <global-variable key="input" value="{{ inputElement2 }}"></global-variable>
+  <global-variable key="input" 
+                   value="{{ inputElement2 }}"></global-variable>
   <paper-input label="Element 2"
                value="{{ inputElement2 }}"></paper-input>
-</template>
 ```
 
 ## Installation

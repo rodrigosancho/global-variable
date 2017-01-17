@@ -1,6 +1,6 @@
 {
   "name": "global-variable",
-  "description": "Element that allows sharing data between non-relatives elements",
+  "description": "Polymer element that allows share data between non-relatives elements.",
   "main": "global-variable.html",
   "dependencies": {
     "polymer": "Polymer/polymer#^1.6.0"
