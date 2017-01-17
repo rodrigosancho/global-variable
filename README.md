@@ -2,7 +2,7 @@
 
 # \<global-variable\>
 
-[Polymer](https://www.polymer-project.org/1.0/)element that allows share data between non-relatives elements.
+[Polymer](https://www.polymer-project.org/1.0/) element that allows share data between non-relatives elements.
 
 ## Demo
 <!--
@@ -40,13 +40,17 @@ To add this element to your project:
 You can instance this element as many times as you desire. 
 Every time that an instance's `value` is modified, it will be propagated to the rest of the 
 instances of this element with the same `key`.
- 
-    <global-variable key="input" value="{{ inputElement1 }}"></global-variable>
-    <paper-input value="{{ inputElement1 }}"></paper-input>
-    
-    <global-variable key="input" value="{{ inputElement2 }}"></global-variable>
-    <paper-input value="{{ inputElement2 }}"></paper-input>
-    
+ ```html
+  <global-variable key="input" 
+                   value="{{ inputElement1 }}"></global-variable>
+  <paper-input label="Element 1"
+               value="{{ inputElement1 }}"></paper-input>
+
+  <global-variable key="input" 
+                   value="{{ inputElement2 }}"></global-variable>
+  <paper-input label="Element 2"
+               value="{{ inputElement2 }}"></paper-input>
+```
 Both input will show the same value
 
 ## Contributing
