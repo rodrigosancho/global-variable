@@ -1,0 +1,100 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`global-variable`
+Element that allows to share data between non-relatives elements
+
+@demo demo/index.html 
+-->
+
+<dom-module id="global-variable">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+  </template>
+  <script>
+      (function(){
+          // Shared information:
+          // data =  key:{ value:"", subscribers:[] } }
+          // Each key has a record of the elements which are subscribed to its value
+          var data = {};
+
+          Polymer({
+              is: 'global-variable',
+              properties: {
+                  /** Key to subscribe */
+                  key: {
+                      type: String,
+                      reflectToAttribute: true,
+                      observer: '_subscribe'
+
+                  },
+
+                  /** Current value of the element. If the element is subscribed to a key, this param is, as well,
+                   * the current value for this key */
+                  value: {
+                      notify: true,
+                      reflectToAttribute: true
+                  }
+              },
+
+              observers: [
+                  '_updateOrigin(key, value)'
+              ],
+
+
+              /**
+               * Tell if the element is properly subscribed to a key
+               * @returns {boolean}
+               */
+              isSubscribed: function(){
+                  return this.key != '' && data[this.key].subscriber.indexOf(this) != -1;
+              },
+
+              detached: function() {
+                  if (this.isSubscribed(this.key)) this.unsubscribe(this.key);
+              },
+
+              _set: function(key, value){
+                  this.set(key, value);
+              },
+
+              _updateOrigin: function(key, value){
+                  if(data[key].value != value) {
+                      data[key].value = value;
+                      //Propagating changes
+                      data[key].subscribers.forEach(function(element){
+                          element._set('value', value);
+                      });
+                  }
+              },
+
+              _subscribe: function(newKey, oldKey){
+                  if(newKey != oldKey && oldKey) this._unsubscribe(oldKey);
+
+                  if(data[newKey]) {
+                      data[newKey].subscribers.push(this);
+                      if(this.value != data[newKey].value)
+                          this.set('value', data[newKey].value);
+                  } else {
+                      data[newKey] = {
+                          value: this.value,
+                          subscribers: [this]
+                      };
+                  }
+              },
+
+              _unsubscribe: function(key){
+                  var subscribers = data[key].subscribers;
+                  var index = subscribers.indexOf(this);
+                  if(index >= 0) subscribers.splice(index, 1);
+                  if(subscribers.length == 0) delete data[key];
+              }
+          });
+      })()
+  </script>
+</dom-module>
