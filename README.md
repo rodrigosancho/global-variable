@@ -5,7 +5,17 @@
 This element allows to share data between non-relatives elements.
 
 ## Demo
-
+<!--
+```
+<custom-element-demo>
+  <template>
+    <link rel="import" href="global-variable.html">
+    <link rel="import" href="../paper-input/paper-input.html">
+    <next-code-block></next-code-block>
+  </template>
+</custom-element-demo>
+```
+-->
 ```html
 <template is="dom-bind">
   <global-variable key="input" value="{{ inputElement1 }}"></global-variable>
