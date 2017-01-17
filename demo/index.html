@@ -19,11 +19,8 @@
   <body>
 
     <div class="vertical-section-container centered">
-      <h3>Any change in any of the inputs, will automatically propagate to the other input.</h3>
-    </div>
-
-    <div class="vertical-section-container centered">
       <h3>Element 1</h3>
+      <h4>Any change in this element will be propagated to the others</h4>
       <demo-snippet>
         <template is="dom-bind">
           <global-variable key="input" value="{{ inputElement1 }}"></global-variable>
@@ -35,11 +32,25 @@
 
     <div class="vertical-section-container centered">
       <h3>Element 2</h3>
+      <h4>Any change in this element will be propagated to the others</h4>
       <demo-snippet>
         <template is="dom-bind">
           <global-variable key="input" value="{{ inputElement2 }}"></global-variable>
           <paper-input label="Element 2"
                        value="{{ inputElement2 }}"></paper-input>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>Element 3</h3>
+      <h4>Since this paper-input element has double square brackets instead of double curly brackets,
+        will be updated by the others, but won't be able to propagate a new value</h4>
+      <demo-snippet>
+        <template is="dom-bind">
+          <global-variable key="input" value="{{ inputElement3 }}"></global-variable>
+          <paper-input label="Element 3"
+                       value="[[ inputElement3 ]]"></paper-input>
         </template>
       </demo-snippet>
     </div>
