@@ -47,19 +47,25 @@ Both input will show the same value
                       type: String,
                       reflectToAttribute: true,
                       observer: '_subscribe'
-
                   },
 
                   /** Current value of the element. If the element is subscribed to a key, this param is as well,
-                   * the current value for this key */
+                   * the current value for the key */
                   value: {
                       notify: true,
+                      reflectToAttribute: true
+                  },
+
+                  /** Readonly elements, will not propagate any possible value change to the rest of the subscribers */
+                  readonly: {
+                      type: Boolean,
+                      value: false,
                       reflectToAttribute: true
                   }
               },
 
               observers: [
-                  '_updateOrigin(key, value)'
+                  '_updateOrigin(key, value, readonly)'
               ],
 
 
@@ -75,8 +81,8 @@ Both input will show the same value
                   this.set(key, value);
               },
 
-              _updateOrigin: function(key, value){
-                  if(data[key].value != value) {
+              _updateOrigin: function(key, value, readonly){
+                  if(!readonly && data[key].value != value) {
                       data[key].value = value;
                       //Propagating changes
                       data[key].subscribers.forEach(function(element){
