@@ -32,10 +32,12 @@
 
     <div class="vertical-section-container centered">
       <h3>Element 2</h3>
-      <h4>Any change in this element will be propagated to the others</h4>
+      <h4>Readonly elements, will not propagate any possible value change to the rest of the subscribers</h4>
       <demo-snippet>
         <template is="dom-bind">
-          <global-variable key="input" value="{{ inputElement2 }}"></global-variable>
+          <global-variable key="input"
+                           readonly
+                           value="{{ inputElement2 }}"></global-variable>
           <paper-input label="Element 2"
                        value="{{ inputElement2 }}"></paper-input>
         </template>
