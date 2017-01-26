@@ -1,0 +1,47 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+@demo demo/index.html
+-->
+
+<dom-module id="global-data">
+    <template>
+        <style>
+            :host {
+                display: none;
+            }
+        </style>
+
+    </template>
+
+    <script src="core/global-data.js"></script>
+    <script>
+        (function(){
+            var globalData = PolymerGlobalData.init();
+
+            Polymer({
+                is: 'global-data',
+
+                created: function(){
+                  globalData.subscribe('*', this);
+                },
+
+                detached: function () {
+                    globalData.unsubscribe('*', this);
+                },
+
+                onEvent : function(event, detail){
+                    this.fire(event, detail);
+                },
+
+                set: function(path, value){
+                    globalData.set(path, value);
+                },
+
+                get: function(path){
+                    return globalData.get(path);
+                }
+            });
+        })();
+    </script>
+</dom-module>

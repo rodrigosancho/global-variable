@@ -6,21 +6,32 @@
 
 var PolymerGlobalData = (function () {
 
-    var instance;
-    var data;
-    var subscribers;
+    var instance,
+        data,
+        subscribers;
 
     /**
      * Notify to all the subscriber the new value.
-     * A subscriber must implement a _set method or implement the PolymerGlobalVariableBehavior
+     * A subscriber must implement a onEvent method.
+     * @param event
+     * @param detail
      * @param path
      * @private
      */
-    var _notify = function (path) {
-        if (typeof data[path] != 'undefined' && typeof subscribers[path] != 'undefined')
-            subscribers[path].forEach(function (subscriber) {
-                subscriber._set(data[path]);
-            });
+    var _notify = function (event, detail, path) {
+        // This method will notify to elements subscribed to the path,
+        // as well as the element who are subscribed to every single action, as the global-data element.
+        var subscribersToNotify = [];
+
+        if(typeof subscribers['*'] != 'undefined')
+            subscribersToNotify = subscribersToNotify.concat(subscribers['*']);
+
+        if(typeof path != 'undefined' && typeof subscribers[path] != 'undefined')
+            subscribersToNotify = subscribersToNotify.concat(subscribers[path]);
+
+        subscribersToNotify.forEach(function (subscriber) {
+            subscriber.onEvent(event, detail);
+        });
     };
 
     var _init = function (initData) {
@@ -39,7 +50,10 @@ var PolymerGlobalData = (function () {
                 console.log("set: ", path, value);
                 if (data[path] != value) {
                     data[path] = value;
-                    _notify(path);
+                    _notify('set', {
+                        path: path,
+                        value: value
+                    }, path);
                 }
             },
 
@@ -47,6 +61,10 @@ var PolymerGlobalData = (function () {
                 console.log("subscribe: ", path, subscriber);
                 subscribers[path] = subscribers[path] || [];
                 subscribers[path].push(subscriber);
+                _notify('subscribe', {
+                    path: path,
+                    element: subscriber
+                })
             },
 
             unsubscribe: function (path, subscriber) {
@@ -55,6 +73,10 @@ var PolymerGlobalData = (function () {
                     var index = subscribers[path].indexOf(subscriber);
                     if (index >= 0) subscribers[path].splice(index, 1);
                     if (subscribers[path].length === 0) delete subscribers[path];
+                    _notify('unsubscribe', {
+                        path: path,
+                        element: subscriber
+                    });
                 }
             },
 

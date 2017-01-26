@@ -12,6 +12,7 @@
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
     <link rel="import" href="../../paper-input/paper-input.html">
     <link rel="import" href="../global-variable.html">
+    <link rel="import" href="../global-data.html">
 
     <style is="custom-style" include="demo-pages-shared-styles">
     </style>
@@ -22,11 +23,20 @@
       <h3>Element 1</h3>
       <h4>Any change in this element will be propagated to the others</h4>
       <demo-snippet>
-        <template is="dom-bind">
+        <template id="demo" is="dom-bind">
+          <global-data on-set="alert"
+                       on-subscribe="alert"
+                       on-unsubscribe="alert"></global-data>
           <global-variable key="input" value="{{ inputElement1 }}"></global-variable>
           <paper-input label="Element 1"
                        value="{{ inputElement1 }}"></paper-input>
         </template>
+        <script>
+          var demo = document.querySelector('#demo');
+          demo.alert = function(event){
+              console.log(event);
+          }
+        </script>
       </demo-snippet>
     </div>
 

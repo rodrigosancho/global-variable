@@ -87,8 +87,12 @@ Both input will show the same value
                     globalData.subscribe(newKey, this);
                 },
 
+                onEvent : function(event, detail){
+                    if(event === 'set') this._set(detail)
+                },
+
                 _set : function(value){
-                    this.set('value', value);
+                    this.set('value', value.value);
                 }
             });
         })();
