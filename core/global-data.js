@@ -12,7 +12,7 @@ var PolymerGlobalData = (function () {
 
     /**
      * Notify to all the subscriber the new value.
-     * A subscriber must implement a onEvent method.
+     * A subscriber must implement a _onEvent method.
      * @param event
      * @param detail
      * @param path
@@ -30,7 +30,7 @@ var PolymerGlobalData = (function () {
             subscribersToNotify = subscribersToNotify.concat(subscribers[path]);
 
         subscribersToNotify.forEach(function (subscriber) {
-            subscriber.onEvent(event, detail);
+            subscriber._onEvent(event, detail);
         });
     };
 
@@ -42,12 +42,10 @@ var PolymerGlobalData = (function () {
         //Public API
         return {
             get: function (path) {
-                console.log("get: ", path);
                 return data[path];
             },
 
             set: function (path, value) {
-                console.log("set: ", path, value);
                 if (data[path] != value) {
                     data[path] = value;
                     _notify('set', {
@@ -58,7 +56,6 @@ var PolymerGlobalData = (function () {
             },
 
             subscribe: function (path, subscriber) {
-                console.log("subscribe: ", path, subscriber);
                 subscribers[path] = subscribers[path] || [];
                 subscribers[path].push(subscriber);
                 _notify('subscribe', {
@@ -68,7 +65,6 @@ var PolymerGlobalData = (function () {
             },
 
             unsubscribe: function (path, subscriber) {
-                console.log("unsubscribe: ", path, subscriber);
                 if (typeof subscribers[path] != 'undefined') {
                     var index = subscribers[path].indexOf(subscriber);
                     if (index >= 0) subscribers[path].splice(index, 1);
@@ -86,7 +82,6 @@ var PolymerGlobalData = (function () {
              * @returns {String | false}
              */
             isSubcribed: function (subscriber) {
-                console.log("is subscribe: ", path);
                 for (var prop in subscribers) {
                     if (subscribers.hasOwnProperty(prop)
                         && subscribers[prop].indexOf(subscriber) >= 0)
@@ -105,7 +100,6 @@ var PolymerGlobalData = (function () {
          * @returns {*}
          */
         init: function (data) {
-            console.log("init: ", data);
             if (!instance) {
                 instance = _init(data)
             }

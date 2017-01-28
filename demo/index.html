@@ -24,16 +24,16 @@
       <h4>Any change in this element will be propagated to the others</h4>
       <demo-snippet>
         <template id="demo" is="dom-bind">
-          <global-data on-set="alert"
-                       on-subscribe="alert"
-                       on-unsubscribe="alert"></global-data>
+          <global-data on-set="log"
+                       on-subscribe="log"
+                       on-unsubscribe="log"></global-data>
           <global-variable key="input" value="{{ inputElement1 }}"></global-variable>
           <paper-input label="Element 1"
                        value="{{ inputElement1 }}"></paper-input>
         </template>
         <script>
           var demo = document.querySelector('#demo');
-          demo.alert = function(event){
+          demo.log = function(event){
               console.log(event);
           }
         </script>

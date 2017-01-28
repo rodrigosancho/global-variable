@@ -2,7 +2,8 @@
 
 <!--
 `<global-variable>`
-[Polymer](https://www.polymer-project.org/1.0/) element that allows share data between non-relatives elements.
+
+[Polymer element](https://www.polymer-project.org/1.0/) that allows share data between non-relatives elements.
 
 You can instance this element as many times as you desire.
 Every time that an instance's `value` is modified, it will be propagated to the rest of the
@@ -42,6 +43,11 @@ Both input will show the same value
                 is: 'global-variable',
 
                 properties: {
+                    _notify : {
+                        type: Function,
+                        computed: '_notifyOrigin(key, readonly)'
+                    },
+
                     /** Key to subscribe */
                     key: {
                         type: String,
@@ -53,7 +59,8 @@ Both input will show the same value
                      * the current value for the key */
                     value: {
                         notify: true,
-                        reflectToAttribute: true
+                        reflectToAttribute: true,
+                        observer: '_notify'
                     },
 
                     /** Readonly elements, will not propagate any possible value change to the rest of the subscribers */
@@ -64,10 +71,6 @@ Both input will show the same value
                     }
                 },
 
-                observers: [
-                    '_notifyOrigin(key, value, readonly)'
-                ],
-
                 ready: function () {
                     globalData = PolymerGlobalData.init();
                 },
@@ -76,8 +79,10 @@ Both input will show the same value
                     globalData.unsubscribe(this.key, this);
                 },
 
-                _notifyOrigin: function (key, value, readonly) {
-                    if (!readonly && value) globalData.set(key, value);
+                _notifyOrigin: function (key, readonly) {
+                    return function (newValue, oldValue){
+                        if (!readonly) globalData.set(key, newValue);
+                    }
                 },
 
                 _subscribe: function (newKey, oldKey) {
@@ -87,7 +92,7 @@ Both input will show the same value
                     globalData.subscribe(newKey, this);
                 },
 
-                onEvent : function(event, detail){
+                _onEvent : function(event, detail){
                     if(event === 'set') this._set(detail)
                 },
 
