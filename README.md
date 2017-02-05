@@ -1,6 +1,6 @@
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/trofrigo/global-variable)
 
-# \<global-variable\>
+# \<global-variable\> v0.1.3
 
 [Polymer](https://www.polymer-project.org/1.0/) element that allows share data between non-relatives elements.
 
@@ -102,6 +102,19 @@ an element subscribe to a path or an element unsubscribe from a path.
     </script>  
     
  ```
+ 
+##Changelog
+###v0.1.3
+* Fixed Issue #3. <global-variable> was not initializing the `value` in the `subscribe` method.
+###v0.1.2
+* Added a new element, <global-data>, that allows to access to the core's API, 
+and fires events every time that an element subscribes or unsubscribes to a path 
+or every time that path's value is modified.
+* Encapsulating all the logic into a new core library.
+###v0.1.1
+* Fixed some errors in the README.md file
+###v0.1.0
+* First version of the element.
  
 ## Contributing
 

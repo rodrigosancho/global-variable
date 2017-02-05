@@ -90,6 +90,7 @@ Both input will show the same value
                         globalData.unsubscribe(oldKey, this);
 
                     globalData.subscribe(newKey, this);
+                    this.set('value', globalData.get(newKey));
                 },
 
                 _onEvent : function(event, detail){
