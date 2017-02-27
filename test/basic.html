@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>global-variable test</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../global-variable.html">
+</head>
+<body>
+<test-fixture id="basic">
+    <template>
+        <global-variable id="element1"></global-variable>
+        <global-variable id="element2"></global-variable>
+        <global-variable id="element3"></global-variable>
+    </template>
+</test-fixture>
+
+<script>
+    suite('global-variable', function () {
+
+        var app,
+            value = "Lorem", key = "key",
+            element1, element2, element3;
+
+        setup(function(){
+            app = fixture('basic');
+            element1 = Polymer.dom(app.root).querySelector('#element1');
+            element2 = Polymer.dom(app.root).querySelector('#element2');
+            element3 = Polymer.dom(app.root).querySelector('#element3');
+
+            element1.key = key;
+
+            element2.key = key;
+            element2.value = value;
+
+            element3.key = key;
+            element3.readonly= true;
+        });
+
+        test('Two elements subscribed to the same path have the same value', function () {
+            assert.equal(element1.key, element2.key);
+            assert.equal(element1.value, value);
+            assert.equal(element2.value, value);
+        });
+
+//        test('Elements added and subscribed asynchronously to an existing path, populates with the current value for the path', function () {
+//            //TODO
+//        });
+//
+//        test('A change in the value of a path subscriber, triggers the update of rest of the path subscribers', function () {
+//            //TODO
+//        });
+//
+//        test('A change in the value of a readonly element, does not trigger the update of rest of the path subscribers', function () {
+//            //TODO
+//        });
+//
+//        test('Removing an element subscribed to a path does not delete the value for the path', function () {
+//            //TODO
+//        });
+    });
+
+    suite('global-data', function () {
+//        test('Updating the value for a path, triggers the update of global-variable elements subscribed to the path', function () {
+//            //TODO
+//        });
+//
+//        test('Notifies that a path is updated', function () {
+//            //TODO
+//        });
+//
+//        test('Notifies when something subscribes to a path', function () {
+//            //TODO
+//        });
+//
+//        test('Notifies when something unsubscribes to a path', function () {
+//            //TODO
+//        });
+//
+//        test('Shows the value for any path', function () {
+//            //TODO
+//        });
+    });
+</script>
+</body>
+</html>
