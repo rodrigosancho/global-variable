@@ -1,6 +1,6 @@
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/trofrigo/global-variable)
 
-# \<global-variable\> v0.1.3
+# \<global-variable\> v0.1.4
 
 [Polymer](https://www.polymer-project.org/1.0/) element that allows share data between non-relatives elements.
 
@@ -104,6 +104,8 @@ an element subscribe to a path or an element unsubscribe from a path.
  ```
  
 ##Changelog
+###v0.1.4
+* Fixed Issue #4. Removed the `reflectToAttribute` on `value` property.
 ###v0.1.3
 * Fixed Issue #3. <global-variable> was not initializing the `value` in the `subscribe` method.
 ###v0.1.2
