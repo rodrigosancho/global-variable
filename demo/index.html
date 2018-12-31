@@ -6,30 +6,35 @@
 
     <title>global-variable demo</title>
 
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+    <script type="module">
+      import "@polymer/paper-input/paper-input.js";
+      import "@polymer/iron-demo-helpers/demo-pages-shared-styles.js";
+      import "@polymer/iron-demo-helpers/demo-snippet.js";
+      import "../global-variable.js";
+      import "../global-data.js";
+    </script>
 
-    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-    <link rel="import" href="../../paper-input/paper-input.html">
-    <link rel="import" href="../global-variable.html">
-    <link rel="import" href="../global-data.html">
+    <script type="module">
+      const $_documentContainer = document.createElement('template');
 
-    <style is="custom-style" include="demo-pages-shared-styles">
-    </style>
+      $_documentContainer.innerHTML = `<style is="custom-style" include="demo-pages-shared-styles"></style>`;
+
+      document.head.appendChild($_documentContainer.content);
+    </script>
   </head>
   <body>
-
     <div class="vertical-section-container centered">
       <h3>Element 1</h3>
       <h4>Any change in this element will be propagated to the others</h4>
       <demo-snippet>
         <template id="demo" is="dom-bind">
-          <global-data on-set="log"
-                       on-subscribe="log"
-                       on-unsubscribe="log"></global-data>
+          <global-data 
+            on-set="log"
+            on-subscribe="log"
+            on-unsubscribe="log"></global-data>
           <global-variable key="input" value="{{ inputElement1 }}"></global-variable>
-          <paper-input label="Element 1"
-                       value="{{ inputElement1 }}"></paper-input>
+          <paper-input label="Element 1" value="{{ inputElement1 }}"></paper-input>
         </template>
         <script>
           var demo = document.querySelector('#demo');
@@ -45,11 +50,11 @@
       <h4>Readonly elements, will not propagate any possible value change to the rest of the subscribers</h4>
       <demo-snippet>
         <template is="dom-bind">
-          <global-variable key="input"
-                           readonly
-                           value="{{ inputElement2 }}"></global-variable>
-          <paper-input label="Element 2"
-                       value="{{ inputElement2 }}"></paper-input>
+          <global-variable 
+            key="input"
+            readonly
+            value="{{ inputElement2 }}"></global-variable>
+          <paper-input label="Element 2" value="{{ inputElement2 }}"></paper-input>
         </template>
       </demo-snippet>
     </div>
@@ -61,8 +66,7 @@
       <demo-snippet>
         <template is="dom-bind">
           <global-variable key="input" value="{{ inputElement3 }}"></global-variable>
-          <paper-input label="Element 3"
-                       value="[[ inputElement3 ]]"></paper-input>
+          <paper-input label="Element 3" value="[[ inputElement3 ]]"></paper-input>
         </template>
       </demo-snippet>
     </div>
