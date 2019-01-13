@@ -13,61 +13,67 @@
       import "@polymer/iron-demo-helpers/demo-snippet.js";
       import "../global-variable.js";
       import "../global-data.js";
+
+      import {html} from '@polymer/polymer/lib/utils/html-tag.js';
+
+      const template = html`
+        <custom-style>
+           <style is="custom-style" include="demo-pages-shared-styles">
+           </style>
+        </custom-style>
+      `;
+
+      document.head.appendChild(template.content);
     </script>
 
-    <script type="module">
-      const $_documentContainer = document.createElement('template');
-
-      $_documentContainer.innerHTML = `<style is="custom-style" include="demo-pages-shared-styles"></style>`;
-
-      document.head.appendChild($_documentContainer.content);
-    </script>
+    <style is="custom-style" include="demo-pages-shared-styles"></style>
   </head>
-  <body>
+  <body unresolved>
     <div class="vertical-section-container centered">
       <h3>Element 1</h3>
       <h4>Any change in this element will be propagated to the others</h4>
       <demo-snippet>
-        <template id="demo" is="dom-bind">
-          <global-data 
-            on-set="log"
+        <dom-bind>
+          <template id="demo">
+            <global-data on-set="log"
             on-subscribe="log"
             on-unsubscribe="log"></global-data>
-          <global-variable key="input" value="{{ inputElement1 }}"></global-variable>
-          <paper-input label="Element 1" value="{{ inputElement1 }}"></paper-input>
-        </template>
+            <global-variable key="input" value="{{inputElement1}}"></global-variable>
+            <paper-input label="Element 1" value="{{inputElement1}}"></paper-input>
+          </template>
+        </dom-bind>
         <script>
           var demo = document.querySelector('#demo');
           demo.log = function(event){
-              console.log(event.type, event.detail);
+            console.log(event.type, event.detail);
           }
         </script>
       </demo-snippet>
-    </div>
-
-    <div class="vertical-section-container centered">
+    
       <h3>Element 2</h3>
       <h4>Readonly elements, will not propagate any possible value change to the rest of the subscribers</h4>
       <demo-snippet>
-        <template is="dom-bind">
-          <global-variable 
-            key="input"
-            readonly
-            value="{{ inputElement2 }}"></global-variable>
-          <paper-input label="Element 2" value="{{ inputElement2 }}"></paper-input>
-        </template>
+        <dom-bind>
+          <template>
+            <global-variable 
+              key="input"
+              readonly
+              value="{{inputElement2}}"></global-variable>
+            <paper-input label="Element 2" value="{{inputElement2}}"></paper-input>
+          </template>
+        </dom-bind>
       </demo-snippet>
-    </div>
-
-    <div class="vertical-section-container centered">
+    
       <h3>Element 3</h3>
       <h4>Since this paper-input element has double square brackets instead of double curly brackets,
         will be updated by the others, but won't be able to propagate a new value</h4>
       <demo-snippet>
-        <template is="dom-bind">
-          <global-variable key="input" value="{{ inputElement3 }}"></global-variable>
-          <paper-input label="Element 3" value="[[ inputElement3 ]]"></paper-input>
-        </template>
+        <dom-bind>
+          <template>
+            <global-variable key="input" value="{{inputElement3}}"></global-variable>
+            <paper-input label="Element 3" value="[[inputElement3]]"></paper-input>
+          </template>
+        </dom-bind>
       </demo-snippet>
     </div>
   </body>
