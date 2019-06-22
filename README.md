@@ -1,10 +1,12 @@
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/trofrigo/global-variable)
 
-# \<global-variable\> v0.1.4
+# \<global-variable\> v0.3.0
 
-[Polymer](https://www.polymer-project.org/1.0/) element that allows share data between non-relatives elements.
+[Polymer](https://www.polymer-project.org/) element that allows share data between non-relatives elements.
 
-Can be used as a [Polymer v1 element](https://www.polymer-project.org/1.0/docs/devguide/feature-overview) or a [Polymer hybrid mode element](https://www.polymer-project.org/2.0/docs/devguide/hybrid-elements).
+Can be used as a [Polymer v1 element](https://www.polymer-project.org/1.0/docs/devguide/feature-overview) or a [Polymer hybrid mode element](https://www.polymer-project.org/2.0/docs/devguide/hybrid-elements), versions v.0.1.x.
+
+Also can be used as a [Polymer v3 element](https://polymer-library.polymer-project.org/3.0/docs/about_30)
 
 ## Demo
 <!--
@@ -106,6 +108,8 @@ an element subscribe to a path or an element unsubscribe from a path.
  ```
  
 ## Changelog
+### v0.3.0
+* Migration to Polymer 3
 ### v0.1.4
 * Fixed Issue #4. Removed the `reflectToAttribute` on `value` property.
 ### v0.1.3
@@ -130,6 +134,6 @@ or every time that path's value is modified.
 
 ## License
 
-Copyright (c) 2017 Rodrigo Sancho
+Copyright (c) 2019 Rodrigo Sancho
 
 Licensed under the [MIT license](https://github.com/trofrigo/global-variable/blob/master/LICENSE).
