@@ -6,16 +6,16 @@
 
     <title>global-variable demo</title>
 
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    <script type="module">
+      import "@polymer/paper-input/paper-input.js";
+      import "@polymer/iron-demo-helpers/demo-pages-shared-styles.js";
+      import "@polymer/iron-demo-helpers/demo-snippet.js";
 
-    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-    <link rel="import" href="../../paper-input/paper-input.html">
-    <link rel="import" href="../global-variable.html">
-    <link rel="import" href="../global-data.html">
+    </script>
 
-    <style is="custom-style" include="demo-pages-shared-styles">
-    </style>
+    <script type="module" src="../global-variable.js"></script>
+    <script type="module" src="../global-data.js"></script>
   </head>
   <body>
 
@@ -23,16 +23,20 @@
       <h3>Element 1</h3>
       <h4>Any change in this element will be propagated to the others</h4>
       <demo-snippet>
-        <template id="demo" is="dom-bind">
-          <global-data on-set="log"
-                       on-subscribe="log"
-                       on-unsubscribe="log"></global-data>
-          <global-variable key="input" value="{{ inputElement1 }}"></global-variable>
-          <paper-input label="Element 1"
-                       value="{{ inputElement1 }}"></paper-input>
-        </template>
+          <dom-bind>
+            <template id="demo">
+              <global-data on-set="log"
+                          on-subscribe="log"
+                          on-unsubscribe="log"></global-data>
+              <global-variable key="input" value="{{ inputElement1 }}"></global-variable>
+              <paper-input label="Element 1"
+                          value="{{ inputElement1 }}"></paper-input>
+            </template>
+          </dom-bind>
+        
         <script>
           var demo = document.querySelector('#demo');
+
           demo.log = function(event){
               console.log(event.type, event.detail);
           }
@@ -44,12 +48,18 @@
       <h3>Element 2</h3>
       <h4>Readonly elements, will not propagate any possible value change to the rest of the subscribers</h4>
       <demo-snippet>
-        <template is="dom-bind">
-          <global-variable key="input"
-                           readonly
-                           value="{{ inputElement2 }}"></global-variable>
-          <paper-input label="Element 2"
-                       value="{{ inputElement2 }}"></paper-input>
+        <template>
+          <dom-bind>
+            <template>
+              <global-variable key="input"
+                              readonly
+                              value="{{ inputElement2 }}"></global-variable>
+              <paper-input label="Element 2"
+                          value="{{ inputElement2 }}"></paper-input>
+              <paper-input label="Element 3"
+                          value="{{ inputElement2 }}"></paper-input>
+            </template>
+          </dom-bind>
         </template>
       </demo-snippet>
     </div>
@@ -59,10 +69,14 @@
       <h4>Since this paper-input element has double square brackets instead of double curly brackets,
         will be updated by the others, but won't be able to propagate a new value</h4>
       <demo-snippet>
-        <template is="dom-bind">
-          <global-variable key="input" value="{{ inputElement3 }}"></global-variable>
-          <paper-input label="Element 3"
-                       value="[[ inputElement3 ]]"></paper-input>
+        <template>
+            <dom-bind>
+              <template>
+                <global-variable key="input" value="{{ inputElement3 }}"></global-variable>
+                <paper-input label="Element 3"
+                            value="[[ inputElement3 ]]"></paper-input>
+            </template>
+          </dom-bind>
         </template>
       </demo-snippet>
     </div>

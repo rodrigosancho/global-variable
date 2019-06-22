@@ -1,180 +1,186 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes"
+    />
 
     <title>global-variable test</title>
 
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-    <script src="../../web-component-tester/browser.js"></script>
+    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../node_modules/@polymer/test-fixture/test-fixture.js"></script>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+    <script src="../node_modules/wct-mocha/wct-mocha.js"></script>
 
-    <link rel="import" href="../global-data.html">
-    <link rel="import" href="../global-variable.html">
-</head>
-<body>
-<test-fixture id="globalVariable">
-    <template>
+    <script type="module" src="../global-data.js"></script>
+    <script type="module" src="../global-variable.js"></script>
+  </head>
+  <body>
+    <test-fixture id="globalVariable">
+      <template is="dom-template">
         <global-variable id="element1"></global-variable>
         <global-variable id="element2"></global-variable>
         <global-variable id="element3"></global-variable>
-    </template>
-</test-fixture>
+      </template>
+    </test-fixture>
 
-<test-fixture id="globalData">
-    <template>
+    <test-fixture id="globalData">
+      <template is="dom-template">
         <global-data id="dataElement"></global-data>
+        <global-variable id="element4"></global-variable>
+        <global-variable id="element5"></global-variable>
+      </template>
+    </test-fixture>
 
-        <global-variable id="element4"
-                         key="key"
-                         value="Lorem"></global-variable>
-        <global-variable id="element5"
-                         key="key"></global-variable>
-    </template>
-</test-fixture>
+    <script type="module">    
+      suite("global-variable", () => {
+        const value = "Lorem";
+        const key = "key";
+        let element1;
+        let element2;
+        let element3;
+        let app;
 
-<script>
-    suite('global-variable', function () {
+        setup(() => {
+          [element1, element2, element3] = fixture("globalVariable");
 
-        var app,
-            value = "Lorem", key = "key",
-            element1, element2, element3;
+          element1.key = key;
 
-        setup(function(){
-            app = fixture('globalVariable');
-            element1 = Polymer.dom(app.root).querySelector('#element1');
-            element2 = Polymer.dom(app.root).querySelector('#element2');
-            element3 = Polymer.dom(app.root).querySelector('#element3');
+          element2.key = key;
+          element2.value = value;
 
-            element1.key = key;
-
-            element2.key = key;
-            element2.value = value;
-
-            element3.key = key;
-            element3.readonly = true;
+          element3.key = key;
+          element3.readonly = true;
         });
 
-        test('Two elements subscribed to the same path have the same value', function () {
-            assert.equal(element1.key, element2.key);
-            assert.equal(element1.value, element2.value);
+        test("Two elements subscribed to the same path have the same value", () => {
+          assert.equal(element1.key, element2.key);
+          assert.equal(element1.value, element2.value);
 
-            assert.equal(element1.key, element3.key);
-            assert.equal(element1.value, element3.value);
+          assert.equal(element1.key, element3.key);
+          assert.equal(element1.value, element3.value);
         });
 
-        test('Elements added and subscribed asynchronously to an existing path, populates with the current value for the path', function () {
-            //Adding a new element
-            var newElement = document.createElement('global-variable');
-            element1.parentNode.appendChild(newElement);
-            //Setting the new key
-            newElement.key = key;
-            assert.equal(element1.key, newElement.key);
-            assert.equal(element1.value, value);
-            assert.equal(newElement.value, value);
+        test("Elements added and subscribed asynchronously to an existing path, populates with the current value for the path", () => {
+          //Adding a new element
+          const newElement = document.createElement("global-variable");
+          element1.parentNode.appendChild(newElement);
+          //Setting the new key
+          newElement.key = key;
+          assert.equal(element1.key, newElement.key);
+          assert.equal(element1.value, value);
+          assert.equal(newElement.value, value);
         });
 
-        test('A change in the value of a path subscriber, triggers the update of rest of the path subscribers', function () {
-            element1.value = "New value";
+        test("A change in the value of a path subscriber, triggers the update of rest of the path subscribers", () => {
+          element1.value = "New value";
 
-            assert.equal(element1.key, element2.key);
-            assert.equal(element1.value, element2.value);
+          assert.equal(element1.key, element2.key);
+          assert.equal(element1.value, element2.value);
 
-            assert.equal(element1.key, element3.key);
-            assert.equal(element1.value, element3.value);
+          assert.equal(element1.key, element3.key);
+          assert.equal(element1.value, element3.value);
         });
 
-        test('A change in the value of a readonly element, does not trigger the update of rest of the path subscribers', function () {
-            element3.value = "New value";
+        test("A change in the value of a readonly element, does not trigger the update of rest of the path subscribers", () => {
+          element3.value = "New value";
 
-            assert.equal(element3.key, element2.key);
-            assert.notEqual(element3.value, element2.value);
+          assert.equal(element3.key, element2.key);
+          assert.notEqual(element3.value, element2.value);
 
-            assert.equal(element3.key, element1.key);
-            assert.notEqual(element3.value, element1.value);
+          assert.equal(element3.key, element1.key);
+          assert.notEqual(element3.value, element1.value);
 
-            assert.equal(element1.value, element2.value);
+          assert.equal(element1.value, element2.value);
         });
 
-        test('Removing an element subscribed to a path does not delete the value for the path', function () {
-            //Removing element1
-            element1.parentNode.removeChild(element1);
+        test("Removing an element subscribed to a path does not delete the value for the path", () => {
+          //Removing element1
+          element1.parentNode.removeChild(element1);
+          //Checking values
+          assert.equal(element2.value, value);
+          assert.equal(element3.value, value);
+        });
+      });
+
+      suite("global-data", () => {
+        const value = "Lorem";
+        const key = "key";
+        let dataElement;
+        let element4;
+        let element5;
+
+        setup(() => {
+          [dataElement, element4, element5] = fixture("globalData");
+
+          element4.key = key;
+          element4.value = value;
+
+          element5.key = key;
+        });
+
+        test("Shows the value for any path", () => {
+          assert.equal(dataElement.get(key), value);
+        });
+
+        test("Updating the value for a path, triggers the update of global-variable elements subscribed to the path", () => {
+          const newValue = "Ipsum";
+
+          //Checking values
+          dataElement.addEventListener("set", event => {
+            if (event.detail.path === key) {
+              assert.equal(element4.value, newValue);
+              assert.equal(element5.value, newValue);
+            }
+          });
+
+          dataElement.set(key, newValue);
+        });
+
+        test("Notifies that a path is updated", () => {
+          const newValue = "Ipsum";
+
+          dataElement.addEventListener("set", event => {
+            const path = event.detail.path;
+            const value = event.detail.value;
             //Checking values
-            assert.equal(element2.value, value);
-            assert.equal(element3.value, value);
-        });
-    });
+            assert.equal(path, key);
+            assert.equal(value, newValue);
+          });
 
-    suite('global-data', function () {
-
-        var app,
-            value = "Lorem", key = "key",
-            dataElement, element4, element5;
-
-        setup(function(){
-            app = fixture('globalData');
-            dataElement = Polymer.dom(app.root).querySelector('#dataElement');
-            element4 = Polymer.dom(app.root).querySelector('#element4');
-            element5 = Polymer.dom(app.root).querySelector('#element5');
+          dataElement.set(key, newValue);
         });
 
-        test('Shows the value for any path', function () {
-            assert.equal(dataElement.get(key), value);
-        });
+        test("Notifies when something subscribes to a path", () => {
+          let newElement;
 
-        test('Updating the value for a path, triggers the update of global-variable elements subscribed to the path', function () {
-
-            var newValue = "Ipsum";
-
+          dataElement.addEventListener("subscribe", event => {
+            const path = event.detail.path;
+            const element = event.detail.element;
             //Checking values
-            dataElement.addEventListener('set', function(event){
-                if(event.detail.path === key){
-                    assert.equal(element4.value, newValue);
-                    assert.equal(element5.value, newValue);
-                }
-            });
+            assert.equal(path, key);
+            assert.equal(element, newElement);
+          });
 
-            dataElement.set(key, newValue);
+          newElement = document.createElement("global-variable");
+          newElement.key = key;
         });
 
-        test('Notifies that a path is updated', function () {
-            var newValue = "Ipsum";
-
-            dataElement.addEventListener('set', function(event){
-                var path = event.detail.path, value = event.detail.value;
-                //Checking values
-                assert.equal(path, key);
-                assert.equal(value, newValue);
-            });
-
-            dataElement.set(key, newValue);
+        test("Notifies when something unsubscribes to a path", () => {
+          dataElement.addEventListener("unsubscribe", event => {
+            const path = event.detail.path;
+            const element = event.detail.element;
+            //Checking values
+            assert.equal(path, key);
+            assert.equal(element, element4);
+          });
+          //Removing element1
+          element4.parentNode.removeChild(element4);
         });
-
-        test('Notifies when something subscribes to a path', function () {
-            var newElement;
-
-            dataElement.addEventListener('subscribe', function(event){
-                var path = event.detail.path, element = event.detail.element;
-                //Checking values
-                assert.equal(path, key);
-                assert.equal(element, newElement);
-            });
-
-            newElement = document.createElement('global-variable');
-            newElement.key = key;
-        });
-
-        test('Notifies when something unsubscribes to a path', function () {
-            dataElement.addEventListener('unsubscribe', function(event){
-                var path = event.detail.path, element = event.detail.element;
-                //Checking values
-                assert.equal(path, key);
-                assert.equal(element, element4);
-            });
-            //Removing element1
-            element4.parentNode.removeChild(element4);
-        });
-    });
-</script>
-</body>
+      });
+    </script>
+  </body>
 </html>
